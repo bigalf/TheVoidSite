@@ -1,0 +1,40 @@
+<div class="menu">
+  {% for link in linklists.main-menu.links %}
+  {% assign child_list_handle = link.title | handleize %}
+  {% if linklists[child_list_handle].links != blank %}
+<div class="dd-parent"><a href="{{ link.url }}">{{ link.title }}</a>
+    {% for childlink in linklists[child_list_handle].links %}
+<div class="dd-child"><a href="{{ childlink.url }}">{{ childlink.title | escape }}</a></div>
+    {% endfor %}</div>
+  {% else %}
+    <a href="{{ link.url }}">{{ link.title }}</a>
+  {% endif %}
+{% endfor %}
+</div>
+<div class="account">
+<a href="/cart">cart</a>
+
+{% if shop.customer_accounts_enabled %}
+  {% if customer %}
+    <a href="/account">account</a>
+    {{ 'log out'  | customer_logout_link }}
+  {% else %}
+    {{ 'log in ' | customer_login_link }}
+    {{ 'register' | customer_register_link }}
+  {% endif %}
+{% endif %}
+  </div>
+<style>
+  #shopify-section-header, .menu, .account {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}
+  .dd-child{
+   display: none; 
+  }
+  
+  .dd-parent:hover .dd-child{
+   display: block; 
+  }
+</style>
